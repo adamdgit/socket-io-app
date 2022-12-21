@@ -1,5 +1,7 @@
+import { Dispatch, SetStateAction } from "react"
 
-export default function Room({ setRoom, socket } : {setRoom:React.SetStateAction<string> , socket:any}) {
+export default function Room({ room, setRoom, socket } : 
+  { room:string, setRoom:Dispatch<SetStateAction<string>>, socket:any }) {
 
   // creates and joins a room, name is set by 'room' state value
   const joinRoom = () => {

@@ -51,7 +51,7 @@ function App() {
         <p>Room: {room}</p>
       </span>
 
-      <Room setRoom={setRoom} socket={socket}/>
+      <Room room={room} setRoom={setRoom} socket={socket}/>
 
       {
 
