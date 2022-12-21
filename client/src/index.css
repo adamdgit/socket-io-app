@@ -9,17 +9,68 @@
 *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 
+.heading1 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  border-radius: 10px;
+  background: linear-gradient(0deg, rgb(233, 144, 27), rgb(255, 191, 95));
+  color: #222;
+  padding: .5rem 2rem;
+}
+
+.heading2 {
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
+.App {
+  color: #eee;
+  background: radial-gradient(circle at center right, rgb(143, 63, 17) 5%, 
+  rgb(73, 33, 6) 20%, 
+  rgb(0, 0, 0) 40%, 
+  rgba(15, 15, 15) 100%);
+  min-height: 100vh;
+}
+
+.rooms-wrap {
+  display: grid;
+  gap: 2rem;
+  padding-bottom: 2rem;
+  width: 600px;
+  height: auto;
+  background: linear-gradient(140deg, #343434 30%, #db6a29 200%);
+  border-radius: 10px;
+}
+
+.create-room {
+  display: grid;
+  padding: 0 2rem;
+}
+
+.available-rooms {
+  padding: 0 2rem;
+}
+
+.room {
+  display: grid;
+}
+
 .input-message {
-  background: #eee;
-  padding: 1rem;
+  background: #222;
+  color: #eee;
+  padding: .7rem 1rem;
 }
 
 .send-button {
-  background: white;
-  border: 1px solid #eee;
+  background: #e47534;
+  border-radius: 0 10px 10px 0;
   width: fit-content;
-  padding: 1rem;
+  padding: .7rem 1rem;
   cursor: pointer;
+}
+
+.send-button:hover {
+  background: #ff7525;
 }
 
 .user-info {
