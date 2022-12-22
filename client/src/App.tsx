@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { io, Manager } from "socket.io-client"
-import Room from "./components/Room";
+import Lobby from "./components/Lobby";
+
 // connect to backend socket on 3001
 const manager = new Manager("http://localhost:3001");
 const socket = manager.socket("/")
@@ -32,6 +33,7 @@ function App() {
     socket.on("connect", () => setSocketID(socket.id));
     socket.on("disconnect", () => console.log('disconnected'));
     socket.on("receive_message", messageHandler);
+    socket.on("roomUsers", (data) => console.log(data))
 
     return () => {
       socket.off("receive_message");
@@ -41,8 +43,6 @@ function App() {
     
   },[socket]);
 
-  console.log(received)
-
   return (
     <div className="App">
 
@@ -51,7 +51,7 @@ function App() {
         <p>Room: {room}</p>
       </span>
 
-      <Room room={room} setRoom={setRoom} socket={socket}/>
+      <Lobby room={room} setRoom={setRoom} socket={socket} socketID={socketID}/>
 
       {
 
