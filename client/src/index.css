@@ -56,7 +56,7 @@ html { scroll-behavior: smooth; }
 }
 
 .input-message {
-  background: #222;
+  background: #121212;
   color: #eee;
   padding: .7rem 1rem;
 }
@@ -70,7 +70,7 @@ html { scroll-behavior: smooth; }
 }
 
 .send-button:hover {
-  background: #ff7525;
+  background: #ffac5f;
 }
 
 .user-info {
