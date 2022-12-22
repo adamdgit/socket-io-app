@@ -1,12 +1,12 @@
 import { Dispatch, SetStateAction } from "react"
 
-export default function Room({ room, setRoom, socket } : 
-  { room:string, setRoom:Dispatch<SetStateAction<string>>, socket:any }) {
+export default function Lobby({ room, setRoom, socket, socketID } : 
+  { room:string, setRoom:Dispatch<SetStateAction<string>>, socket:any, socketID:string | undefined }) {
 
   // creates and joins a room, name is set by 'room' state value
   const joinRoom = () => {
     if (room !== "") {
-      socket.emit("join_room", room)
+      socket.emit("join_room", ({ socketID, room }))
     }
   }
 
