@@ -42,15 +42,27 @@ io.on("connection", (socket) => {
   console.log(`user has connected: ${socket.id}`);
 
   socket.on("join_room", ({ socketID, room }) => {
-    console.log(users);
     socket.join(room);
     storeUserInfo(socketID, room);
+    console.log(users);
 
     // send current users in room to all users
     io.to(room).emit("roomUsers", {
       room: room,
       users: users.filter(user => user.room === room)
     });
+
+    // if there is only 1 room, return that room
+    if (users.length === 1) return io.emit("available_rooms", [users[0].room]);
+
+    // filters out duplicate room numbers
+    let rooms = users.reduce((a, b) => {
+      if (a.room !== b.room) return [a.room, b.room];
+      else return [a.room];
+    })
+
+    // send all available rooms to all users
+    io.emit("available_rooms", rooms);
   });
 
   // listen for users disconnecting
