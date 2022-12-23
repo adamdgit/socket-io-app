@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react"
 
-export default function Lobby({ room, setRoom, socket, socketID } : 
-  { room:string, setRoom:Dispatch<SetStateAction<string>>, socket:any, socketID:string | undefined }) {
+export default function Lobby({ room, setRoom, socket, socketID, availableRooms } : 
+  { room:string, setRoom:Dispatch<SetStateAction<string>>, socket:any, socketID:string | undefined, availableRooms:string[] }) {
 
   // creates and joins a room, name is set by 'room' state value
   const joinRoom = () => {
@@ -9,6 +9,8 @@ export default function Lobby({ room, setRoom, socket, socketID } :
       socket.emit("join_room", ({ socketID, room }))
     }
   }
+
+  console.log(availableRooms)
 
   return (
     <div className="rooms-wrap">
@@ -19,27 +21,24 @@ export default function Lobby({ room, setRoom, socket, socketID } :
       <span className="heading2">Create a room</span>
         <div>
           <input className='input-message' 
-            onChange={(e) => setRoom(e.target.value)} 
+            onChange={(e) => setRoom(e.target.value)}
             type="text" 
             placeholder='Create room...' />
           <button className='send-button' onClick={() => joinRoom()}>Create Room</button>
         </div>
       </section>
-
-      <section className="available-rooms">
+      
       <span className="heading2">Find a room</span>
-        <span className="room">
-          Room1
-          <button className='send-button' onClick={() => joinRoom()}>Join Room</button>
-        </span>
-        <span className="room">
-          Room2
-          <button className='send-button' onClick={() => joinRoom()}>Join Room</button>
-        </span>
-        <span className="room">
-          Room3
-          <button className='send-button' onClick={() => joinRoom()}>Join Room</button>
-        </span>
+      <section className="available-rooms">
+      {
+        availableRooms?.map((room, index) => (
+          <span key={index} className="room">
+            Room name: {room}
+            <button className='send-button' onClick={() => joinRoom()}>Join {room}</button>
+          </span>
+        ))
+      }
+
       </section>
 
     </div>
