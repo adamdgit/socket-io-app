@@ -1,8 +1,9 @@
-import { Dispatch, SetStateAction } from "react"
+import { useState } from "react"
 
-export default function Lobby({ room, setRoom, socket, socketID, availableRooms } : 
-  { room:string, setRoom:Dispatch<SetStateAction<string>>, socket:any, socketID:string | undefined, availableRooms:string[] }) {
+export default function Lobby({ socket, socketID, availableRooms } : 
+  { socket:any, socketID:string | undefined, availableRooms:string[] }) {
 
+    const [room, setRoom] = useState<string>('')
   // creates and joins a room, name is set by 'room' state value
   const joinRoom = () => {
     if (room !== "") {
