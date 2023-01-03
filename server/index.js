@@ -17,24 +17,21 @@ const io = new Server(server, {
 const users = [];
 
 // keep track of users inside of each room
-function storeUserInfo(id, room) {
+function storeUserInfo(id, room, color) {
 
-  const user = {id, room};
+  const user = {id, room, color};
   // if user already exists in room, remove them from the array
   users.filter((user, index) => {
     if (user.id === id) users.splice(index, 1);
   });
   users.push(user);
-
 };
 
 // remove disconnected user from array
 function removeDisconnectedUser(id) {
-
   users.filter((user, index) => {
     if (user.id === id) users.splice(index, 1);
   });
-
 }
 
 io.on("connection", (socket) => {
@@ -42,14 +39,22 @@ io.on("connection", (socket) => {
   console.log(`user has connected: ${socket.id}`);
 
   socket.on("join_room", ({ socketID, room }) => {
+
     socket.join(room);
-    storeUserInfo(socketID, room);
+
+    // check joined rooms user color, give newly joined ID the opposite color
+    if (users.filter(user => {
+      if (user.room === room) return user.color
+    }) === 'white') {
+      storeUserInfo(socketID, room, 'black')
+    } else {
+      storeUserInfo(socketID, room, 'white')
+    }
     console.log(users);
 
     // send current users in room to all users
     io.to(room).emit("roomUsers", {
-      room: room,
-      users: users.filter(user => user.room === room)
+      users: users.filter(user => user.room === room),
     });
 
     // if there is only 1 room, return that room
@@ -63,6 +68,7 @@ io.on("connection", (socket) => {
 
     // send all available rooms to all users
     io.emit("available_rooms", rooms);
+
   });
 
   // listen for users disconnecting
