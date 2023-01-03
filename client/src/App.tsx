@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { io, Manager } from "socket.io-client"
+import CheckerBoard from "./components/CheckerBoard";
 import Lobby from "./components/Lobby";
 import Room from "./components/Room";
 
@@ -16,7 +17,8 @@ function App() {
   const [received, setReceived] = useState<string[] | []>([]);
   const [availableRooms, setAvailableRooms] = useState<string[] | []>([]);
   const [socketID, setSocketID] = useState<string | undefined>(undefined);
-  const [room, setRoom] = useState<string>("");
+  const [joinedRoom, setJoinedRoom] = useState<string>("");
+  const [playerColor, setPlayerColor] = useState<string>("");
 
   // update message array when receiving a message update from server 
   const messageHandler = (message: socketMessage) => {
@@ -33,7 +35,11 @@ function App() {
     socket.on("connect", () => setSocketID(socket.id));
     socket.on("disconnect", () => console.log('disconnected'));
     socket.on("receive_message", messageHandler);
-    socket.on("roomUsers", (data) => console.log(data));
+    socket.on("roomUsers", (data) => {
+      console.log(data)
+      setPlayerColor(data.color)
+      setJoinedRoom(data.room)
+    });
     socket.on("available_rooms", getAvailableRooms);
 
     return () => {
@@ -49,21 +55,23 @@ function App() {
 
       <span className="user-info">
         <p>Connected with id: {socketID}</p>
-        <p>Room: {room}</p>
+        <p>Room: {joinedRoom}</p>
       </span>
 
       <Lobby 
-        room={room} 
-        setRoom={setRoom} 
         socket={socket} 
         socketID={socketID} 
         availableRooms={availableRooms}
       />
 
       <Room 
-        room={room} 
+        room={joinedRoom} 
         socket={socket} 
         received={received} 
+      />
+
+      <CheckerBoard 
+        playerColor={playerColor}
       />
 
     </div>
